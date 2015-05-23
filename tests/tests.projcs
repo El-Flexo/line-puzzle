@@ -1,0 +1,41 @@
+<Project DefaultTargets="Rebuild" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <Reference Include="../Assets/Plugins/StrangeIOC.dll"/>
+        <Reference Include="../Assets/Plugins/JsonFx.Json.dll"/>
+        <Reference Include="./lib/nunitlite/nunitlite.dll"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="./src/**/*.cs"/>
+        <Compile Include="../Assets/Scripts/matchPuzzle/utils/Json.cs"/>
+        <Compile Include="../Assets/Scripts/matchPuzzle/MVCS/model/**/*.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Resource Include="./resources/provider_test_common.json"/>
+        <Resource Include="./resources/provider_test_broken.json"/>
+        <Resource Include="./resources/provider_test_invalid.json"/>
+    </ItemGroup>
+    <PropertyGroup>
+        <WarningLevel>0</WarningLevel>
+        <AssemblyName>matchPuzzleTests</AssemblyName>
+        <OutputPath>../out/tests/</OutputPath>
+    </PropertyGroup>
+    <Target Name="Build">
+        <MakeDir Directories="$(OutputPath)" Condition="!Exists('$(OutputPath)')"/>
+        <Copy SourceFiles="@(Reference)"
+              DestinationFolder="$(OutputPath)"/>
+
+        <Csc Sources="@(Compile)"
+             References="@(Reference)"
+             Resources="@(Resource)"
+             OutputAssembly="$(OutputPath)$(AssemblyName).exe"
+             WarningLevel="0"
+             MainEntryPoint="TestMain"/>
+    </Target>
+    <Target Name="Clean">
+        <RemoveDir Directories="$(OutputPath)"/>
+    </Target>
+    <Target Name="Run">
+        <Exec Command="mono $(OutputPath)$(AssemblyName).exe"/>
+    </Target>
+    <Target Name="Rebuild" DependsOnTargets="Clean;Build;"/>
+</Project>
