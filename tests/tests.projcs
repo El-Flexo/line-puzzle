@@ -3,13 +3,25 @@
         <Reference Include="../Assets/Plugins/StrangeIOC.dll"/>
         <Reference Include="../Assets/Plugins/JsonFx.Json.dll"/>
         <Reference Include="./lib/nunitlite/nunitlite.dll"/>
+        <Reference Include="./lib/fluent/FluentAssertions.Core.dll"/>
+        <Reference Include="./lib/fluent/FluentAssertions.dll"/>
+        <Reference Include="System.Xml.Linq"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Copy Include="../Assets/Plugins/StrangeIOC.dll"/>
+        <Copy Include="../Assets/Plugins/JsonFx.Json.dll"/>
+        <Copy Include="./lib/nunitlite/nunitlite.dll"/>
+        <Copy Include="./lib/fluent/FluentAssertions.Core.dll"/>
+        <Copy Include="./lib/fluent/FluentAssertions.dll"/>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="./src/**/*.cs"/>
+        <Compile Include="../Assets/Scripts/Preconditions.cs"/>
         <Compile Include="../Assets/Scripts/matchPuzzle/utils/Json.cs"/>
         <Compile Include="../Assets/Scripts/matchPuzzle/MVCS/model/**/*.cs"/>
     </ItemGroup>
     <ItemGroup>
+        <Resource Include="./resources/level_model_test_common.json"/>
         <Resource Include="./resources/provider_test_common.json"/>
         <Resource Include="./resources/provider_test_broken.json"/>
         <Resource Include="./resources/provider_test_invalid.json"/>
@@ -21,7 +33,7 @@
     </PropertyGroup>
     <Target Name="Build">
         <MakeDir Directories="$(OutputPath)" Condition="!Exists('$(OutputPath)')"/>
-        <Copy SourceFiles="@(Reference)"
+        <Copy SourceFiles="@(Copy)"
               DestinationFolder="$(OutputPath)"/>
 
         <Csc Sources="@(Compile)"

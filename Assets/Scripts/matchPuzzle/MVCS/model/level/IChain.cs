@@ -1,14 +1,17 @@
 using matchPuzzle.MVCS.model.level;
 
-public interface IChain
+namespace matchPuzzle.MVCS.model.level
 {
-    Point Value {
-        get;
+    public interface IChain
+    {
+        Point Value {
+            get;
+        }
+
+        void Pin(Point target);
+
+        bool CanPin(Point target);
+
+        void Clean();
     }
-
-    void Pin(Point target);
-
-    bool CanPin(Point target);
-
-    void Clean();
 }
