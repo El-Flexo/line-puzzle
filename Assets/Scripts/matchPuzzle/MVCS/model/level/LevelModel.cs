@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using matchPuzzle.MVCS.controller.signal;
+using matchPuzzle.MVCS.model.level.chain;
 using matchPuzzle.MVCS.model.level.provider;
 using strange.extensions.signal.impl;
 
@@ -17,7 +18,7 @@ namespace matchPuzzle.MVCS.model.level
         }
 
         [Inject]
-        public RandomProxy random {
+        public IElementGenerator generator {
             get;
             set;
         }
@@ -117,10 +118,10 @@ namespace matchPuzzle.MVCS.model.level
                     var isEmpty = Map[y][x] == (int)ElementType.Empty;
                     if (isEmpty)
                     {
-                        var elementType = random.Get(0, 3);
-                        Map[y][x] = elementType;
+                        var elementType = generator.GetNext();
+                        Map[y][x] = (int)elementType;
                         elemtsToAdd.Add(new AddElementMessage(){
-                            Type = (ElementType)elementType,
+                            Type = elementType,
                             To = new Point(x, y)
                         });
                     }

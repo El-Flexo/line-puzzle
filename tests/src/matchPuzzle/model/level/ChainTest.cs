@@ -2,7 +2,9 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using matchPuzzle.MVCS.controller.signal;
+using matchPuzzle.MVCS.model;
 using matchPuzzle.MVCS.model.level;
+using matchPuzzle.MVCS.model.level.chain;
 using matchPuzzle.model.level.provider;
 
 namespace matchPuzzle.model.level {

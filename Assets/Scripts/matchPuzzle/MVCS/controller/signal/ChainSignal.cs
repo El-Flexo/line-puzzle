@@ -1,4 +1,4 @@
-using matchPuzzle.MVCS.model.level;
+using matchPuzzle.MVCS.model;
 using strange.extensions.signal.impl;
 
 namespace matchPuzzle.MVCS.controller.signal

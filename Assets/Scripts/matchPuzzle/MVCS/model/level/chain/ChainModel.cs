@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using matchPuzzle.MVCS.controller.signal;
 
-namespace matchPuzzle.MVCS.model.level
+namespace matchPuzzle.MVCS.model.level.chain
 {
     public class ChainModel : IChainModel
     {

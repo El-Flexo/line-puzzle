@@ -3,7 +3,9 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
 using matchPuzzle.MVCS.controller.signal;
+using matchPuzzle.MVCS.model;
 using matchPuzzle.MVCS.model.level;
+using matchPuzzle.MVCS.model.level.chain;
 using matchPuzzle.MVCS.model.level.provider;
 using matchPuzzle.model.level.provider;
 using tests.utils;
@@ -136,11 +138,15 @@ namespace matchPuzzle.model.level
             }
         }
 
-        public static ILevelModel CreateLevel(string dataPath) {
+        public static ILevelModel CreateLevel(string dataPath)
+        {
             var provider = DefLevelProviderTest.CreateProvider(dataPath);
+            var generator = new RandomElementGenerator();
+            generator.random = new RandomProxy(123);
+
             var level = new LevelModel();
             level.provider = provider;
-            level.random = new RandomProxy(123);
+            level.generator = generator;
             level.eliminateElements = new EliminateElementsSignal();
             level.moveElements = new MoveElementsSignal();
             level.addElements = new AddElementsSignal();

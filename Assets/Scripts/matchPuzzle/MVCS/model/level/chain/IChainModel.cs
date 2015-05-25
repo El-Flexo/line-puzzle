@@ -1,6 +1,6 @@
 using matchPuzzle.MVCS.model.level;
 
-namespace matchPuzzle.MVCS.model.level
+namespace matchPuzzle.MVCS.model.level.chain
 {
     public interface IChainModel
     {
