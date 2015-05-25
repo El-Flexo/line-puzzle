@@ -1,5 +1,11 @@
+using System.Reflection.Emit;
 using UnityEngine;
 using matchPuzzle.MVCS.controller.signal;
+using matchPuzzle.MVCS.model;
+using matchPuzzle.MVCS.model.level;
+using matchPuzzle.MVCS.model.level.chain;
+using matchPuzzle.MVCS.model.level.provider;
+using matchPuzzle.MVCS.view.game.level;
 using strange.extensions.command.api;
 using strange.extensions.command.impl;
 using strange.extensions.context.impl;
@@ -24,7 +30,7 @@ namespace matchPuzzle.MVCS {
 
         public override void Launch()
         {
-            injectionBinder.GetInstance<InitializeSignal>().Dispatch();
+            injectionBinder.GetInstance<StratupSignal>().Dispatch();
         }
 
         protected override void mapBindings()
@@ -34,7 +40,6 @@ namespace matchPuzzle.MVCS {
             mapModels();
             mapMediators();
             mapUIMediators();
-            mapServices();
             mapOthers();
         }
 
@@ -45,25 +50,27 @@ namespace matchPuzzle.MVCS {
 
         void mapSignals()
         {
-
+            injectionBinder.Bind<PinElementSignal>().ToSingleton();
+            injectionBinder.Bind<UnpinElementSignal>().ToSingleton();
+            injectionBinder.Bind<EliminateElementsSignal>().ToSingleton();
+            injectionBinder.Bind<AddElementsSignal>().ToSingleton();
         }
 
         void mapModels()
         {
-
+            injectionBinder.Bind<RandomProxy>().To(new RandomProxy(123));
+            injectionBinder.Bind<IElementGenerator>().To<RandomElementGenerator>().ToSingleton();
+            injectionBinder.Bind<ILevelProvider>().To<DefLevelProvider>().ToSingleton();
+            injectionBinder.Bind<ILevelModel>().To<LevelModel>();
+            injectionBinder.Bind<IChainModel>().To<ChainModel>();
         }
 
         void mapMediators()
         {
-
+            mediationBinder.Bind<LevelView>().To<LevelMediator>();
         }
 
         void mapUIMediators()
-        {
-
-        }
-
-        void mapServices()
         {
 
         }

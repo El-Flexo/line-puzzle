@@ -19,7 +19,7 @@
         <Compile Include="../Assets/Scripts/Preconditions.cs"/>
         <Compile Include="../Assets/Scripts/matchPuzzle/utils/Json.cs"/>
         <Compile Include="../Assets/Scripts/matchPuzzle/MVCS/model/**/*.cs"/>
-        <Compile Include="../Assets/Scripts/matchPuzzle/MVCS/controller/**/*.cs"/>
+        <Compile Include="../Assets/Scripts/matchPuzzle/MVCS/controller/signal/**/*.cs"/>
     </ItemGroup>
     <ItemGroup>
         <Resource Include="./resources/level_model_test_common.json"/>

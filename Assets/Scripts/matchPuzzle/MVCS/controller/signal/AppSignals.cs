@@ -2,7 +2,10 @@ using strange.extensions.signal.impl;
 
 namespace matchPuzzle.MVCS.controller.signal
 {
-    public class InitializeSignal : Signal
+    public class StratupSignal : Signal
+    {
+    }
+    public class StartLevelSignal : Signal<string>
     {
     }
 }

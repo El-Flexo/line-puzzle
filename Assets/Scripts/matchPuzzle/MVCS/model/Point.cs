@@ -27,7 +27,7 @@ namespace matchPuzzle.MVCS.model
             return x.GetHashCode() ^ y.GetHashCode();
         }
 
-        public string ToString()
+        public override string ToString()
         {
             return base.ToString() + string.Format("[ x = {0}, y = {1} ]", x, y);
         }
