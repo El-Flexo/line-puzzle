@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 
 public class Preconditions
 {
@@ -19,7 +20,7 @@ public class Preconditions
     public static bool CheckArgument(bool expression, string message = "Preconditions: Inconsistent argument!")
     {
         if (!expression)
-            throw new InvalidStateException(message);
+            throw new InvalidEnumArgumentException(message);
         return expression;
     }
 }

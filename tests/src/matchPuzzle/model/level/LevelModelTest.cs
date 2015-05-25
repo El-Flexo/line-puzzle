@@ -1,6 +1,8 @@
 using FluentAssertions;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System;
+using matchPuzzle.MVCS.controller.signal;
 using matchPuzzle.MVCS.model.level;
 using matchPuzzle.MVCS.model.level.provider;
 using matchPuzzle.model.level.provider;
@@ -19,6 +21,11 @@ namespace matchPuzzle.model.level
             var provider = DefLevelProviderTest.CreateProvider("level_model_test_common.json");
             var level = new LevelModel();
             level.provider = provider;
+            level.random = new RandomProxy(123);
+            level.eliminateElements = new EliminateElementsSignal();
+            level.moveElements = new MoveElementsSignal();
+            level.addElements = new AddElementsSignal();
+            level.Construct();
             this.level = level;
         }
 
@@ -31,15 +38,15 @@ namespace matchPuzzle.model.level
                 new Point(3, 2)
             };
 
-            level.CanExecute(chain).Should().Be(false, "Chain length less than expected");
+            level.CanEliminate(chain).Should().Be(false, "Chain length less than expected");
 
-            Action exec = () => level.Execute(chain);
+            Action exec = () => level.Eliminate(chain);
             exec.ShouldThrow<ArgumentException>("Chain length less than expected")
             .WithMessage("Required chain length > 4, executable chain length: 3", "");
         }
 
         [TestCase]
-        public void ExecuteChainCorrectly()
+        public void Eliminate()
         {
             var chain = new Point[]{
                 new Point(3, 0),
@@ -47,18 +54,81 @@ namespace matchPuzzle.model.level
                 new Point(3, 2),
                 new Point(3, 3)
             };
-            level.Execute(chain);
+            level.Eliminate(chain);
 
             var expectedMap = new int[][] {
-                new int[] {0, 1, 3, 0},
-                new int[] {0, 1, 3, 0},
+                new int[] {0, 1, 3, 1},
+                new int[] {0, 1, 3, 2},
                 new int[] {0, 1, 3, 0},
                 new int[] {1, 1, 1, 0},
                 new int[] {1, 1, 3, 1}
             };
-            level.Map.Should().BeSameAs(expectedMap, "Execute chain and fill new elemets");
 
+            Assert.That(level.Map, Is.EqualTo(expectedMap));
             Assert.That(level.MovesLast, Is.EqualTo(2));
+        }
+
+        [TestCase]
+        public void EliminateChain()
+        {
+            var chain = new Point[]{
+                new Point(3, 0),
+                new Point(3, 1),
+                new Point(3, 2),
+                new Point(3, 3)
+            };
+
+            var expectedMap = new int[][] {
+                new int[] {0, 1, 3, -1},
+                new int[] {0, 1, 3, -1},
+                new int[] {0, 1, 3, -1},
+                new int[] {1, 1, 1, -1},
+                new int[] {1, 1, 3, 1}
+            };
+
+            var level = (LevelModel) this.level;
+            level.EliminateElements(chain);
+
+            Assert.That(level.Map, Is.EqualTo(expectedMap));
+        }
+
+        [TestCase]
+        public void SquashMap()
+        {
+            var chain = new Point[]{
+                new Point(3, 1),
+                new Point(3, 2),
+                new Point(3, 3),
+                new Point(2, 3),
+                new Point(1, 3),
+            };
+
+            var expectedMap = new int[][] {
+                new int[] {0, -1, -1, -1},
+                new int[] {0, 1, 3, -1},
+                new int[] {0, 1, 3, -1},
+                new int[] {1, 1, 3, 1},
+                new int[] {1, 1, 3, 1}
+            };
+
+            var level = (LevelModel) this.level;
+            level.EliminateElements(chain);
+            level.SquashMap();
+
+            Assert.That(level.Map, Is.EqualTo(expectedMap));
+        }
+
+        static void PrintMap(int[][] map) {
+            for (var y = 0; y < map.Length; y++)
+            {
+                var str = "[\t";
+                for (var x = 0; x < map[y].Length; x++) {
+                    var value = map[y][x];
+
+                    str += (value >= 0 ? " " + value : value + "") + ",\t";
+                }
+                Console.WriteLine(str + " ],");
+            }
         }
     }
 }

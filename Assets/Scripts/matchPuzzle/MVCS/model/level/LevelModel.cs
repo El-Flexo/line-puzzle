@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using matchPuzzle.MVCS.controller.signal;
 using matchPuzzle.MVCS.model.level.provider;
+using strange.extensions.signal.impl;
 
 namespace matchPuzzle.MVCS.model.level
 {
@@ -9,6 +12,30 @@ namespace matchPuzzle.MVCS.model.level
 
         [Inject]
         public ILevelProvider provider {
+            get;
+            set;
+        }
+
+        [Inject]
+        public RandomProxy random {
+            get;
+            set;
+        }
+
+        [Inject]
+        public EliminateElementsSignal eliminateElements {
+            get;
+            set;
+        }
+
+        [Inject]
+        public MoveElementsSignal moveElements {
+            get;
+            set;
+        }
+
+        [Inject]
+        public AddElementsSignal addElements {
             get;
             set;
         }
@@ -32,28 +59,92 @@ namespace matchPuzzle.MVCS.model.level
             }
         }
 
-        public void Execute(Point[] chain)
+        public void Eliminate(Point[] chain)
         {
-            Preconditions.CheckArgument(!CanExecute(chain), string.Format("Required chain length > 4, executable chain length: {0}", chain.Length));
+            Preconditions.CheckArgument(CanEliminate(chain), string.Format("Required chain length > 4, executable chain length: {0}", chain.Length));
 
             currentMove++;
             EliminateElements(chain);
+            SquashMap();
             FillMap();
         }
 
-        void EliminateElements(Point[] chain)
+        public void EliminateElements(Point[] chain)
         {
-            throw new NotImplementedException("Eliminate elements");
+            foreach (var target in chain)
+                Map[target.y][target.x] = (int)ElementType.Empty;
+            eliminateElements.Dispatch(chain);
+        }
+
+        public void SquashMap()
+        {
+            var elementsToMove = new List<MoveElementMessage>();
+
+            var height = Map.Length;
+            var width = Map[0].Length;
+            for (var x = 0; x < width; x++) {
+                var movePoint = height - 1;
+                for (var y = height - 1; y >= 0; y--) {
+                    var item = Map[y][x];
+                    var isExist = item != (int) ElementType.Empty;
+
+                    if (isExist) {
+                        if (y != movePoint)
+                        {
+                            elementsToMove.Add(new MoveElementMessage(){
+                                From = new Point((uint)x, (uint)y),
+                                To = new Point((uint)x, (uint)movePoint)
+                            });
+
+                            Map[movePoint][x] = Map[y][x];
+                            Map[y][x] = (int) ElementType.Empty;
+                            movePoint = movePoint - 1;
+                        } else
+                            movePoint = y - 1;
+                    }
+                }
+            }
+            if (elementsToMove.Count > 0)
+                moveElements.Dispatch(elementsToMove.ToArray());
         }
 
         void FillMap()
         {
-            throw new NotImplementedException("Fill map");
+            var elemtsToAdd = new List<AddElementMessage>();
+            for (var y = 0; y < Map.Length; y++)
+            {
+                for (var x = 0; x < Map[y].Length; x++) {
+                    var isEmpty = Map[y][x] == (int)ElementType.Empty;
+                    if (isEmpty)
+                    {
+                        var elementType = random.Get(0, 3);
+                        Map[y][x] = elementType;
+                        elemtsToAdd.Add(new AddElementMessage(){
+                            Type = (ElementType)elementType,
+                            To = new Point((uint)x, (uint)y)
+                        });
+                    }
+                }
+            }
+            if (elemtsToAdd.Count > 0)
+                addElements.Dispatch(elemtsToAdd.ToArray());
         }
 
-        public bool CanExecute(Point[] chain)
+        public bool CanEliminate(Point[] chain)
         {
             return chain.Length >= MIN_CHAIN_LENGTH;
         }
+    }
+
+    public struct MoveElementMessage
+    {
+        public Point From;
+        public Point To;
+    }
+
+    public struct AddElementMessage
+    {
+        public Point To;
+        public ElementType Type;
     }
 }

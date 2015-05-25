@@ -2,6 +2,7 @@ using NUnit.Framework;
 using matchPuzzle.MVCS.model.level;
 
 namespace matchPuzzle.model.level {
+    [Ignore]
     [TestFixture]
     public class ChainTest
     {
