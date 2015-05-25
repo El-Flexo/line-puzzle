@@ -92,8 +92,8 @@ namespace matchPuzzle.MVCS.model.level
                         if (y != movePoint)
                         {
                             elementsToMove.Add(new MoveElementMessage(){
-                                From = new Point((uint)x, (uint)y),
-                                To = new Point((uint)x, (uint)movePoint)
+                                From = new Point(x, y),
+                                To = new Point(x, movePoint)
                             });
 
                             Map[movePoint][x] = Map[y][x];
@@ -121,7 +121,7 @@ namespace matchPuzzle.MVCS.model.level
                         Map[y][x] = elementType;
                         elemtsToAdd.Add(new AddElementMessage(){
                             Type = (ElementType)elementType,
-                            To = new Point((uint)x, (uint)y)
+                            To = new Point(x, y)
                         });
                     }
                 }
@@ -133,6 +133,11 @@ namespace matchPuzzle.MVCS.model.level
         public bool CanEliminate(Point[] chain)
         {
             return chain.Length >= MIN_CHAIN_LENGTH;
+        }
+
+        public ElementType Get(Point target)
+        {
+            return (ElementType) Map[target.y][target.x];
         }
     }
 

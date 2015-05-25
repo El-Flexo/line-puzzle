@@ -2,9 +2,9 @@ using matchPuzzle.MVCS.model.level;
 
 namespace matchPuzzle.MVCS.model.level
 {
-    public interface IChain
+    public interface IChainModel
     {
-        Point Value {
+        Point[] Value {
             get;
         }
 

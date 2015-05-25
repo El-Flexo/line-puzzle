@@ -18,15 +18,7 @@ namespace matchPuzzle.model.level
         [SetUp]
         public void Setup()
         {
-            var provider = DefLevelProviderTest.CreateProvider("level_model_test_common.json");
-            var level = new LevelModel();
-            level.provider = provider;
-            level.random = new RandomProxy(123);
-            level.eliminateElements = new EliminateElementsSignal();
-            level.moveElements = new MoveElementsSignal();
-            level.addElements = new AddElementsSignal();
-            level.Construct();
-            this.level = level;
+            this.level = CreateLevel("level_model_test_common.json");
         }
 
         [TestCase]
@@ -129,6 +121,31 @@ namespace matchPuzzle.model.level
                 }
                 Console.WriteLine(str + " ],");
             }
+        }
+
+        static void PrintIndexes(int[][] map) {
+            for (var y = 0; y < map.Length; y++)
+            {
+                var str = "[\t";
+                for (var x = 0; x < map[y].Length; x++) {
+                    var value = string.Format("[{0}, {1}]", x, y);
+
+                    str += value + ",\t";
+                }
+                Console.WriteLine(str + " ],");
+            }
+        }
+
+        public static ILevelModel CreateLevel(string dataPath) {
+            var provider = DefLevelProviderTest.CreateProvider(dataPath);
+            var level = new LevelModel();
+            level.provider = provider;
+            level.random = new RandomProxy(123);
+            level.eliminateElements = new EliminateElementsSignal();
+            level.moveElements = new MoveElementsSignal();
+            level.addElements = new AddElementsSignal();
+            level.Construct();
+            return level;
         }
     }
 }

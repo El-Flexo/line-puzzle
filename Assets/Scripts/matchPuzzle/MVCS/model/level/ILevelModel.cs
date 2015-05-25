@@ -15,5 +15,7 @@ namespace matchPuzzle.MVCS.model.level
         void Eliminate(Point[] chain);
 
         bool CanEliminate(Point[] chain);
+
+        ElementType Get(Point target);
     }
 }
