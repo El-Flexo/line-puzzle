@@ -9,24 +9,38 @@ namespace matchPuzzle.MVCS.model.level.provider
     {
         int[][] initMap;
         int moves;
+        string name;
 
         public void SetDef(string def)
         {
             var definition = Json.Parse<Dictionary<String, object>>(def);
 
-            initMap = (int[][]) definition["initMap"];
-            moves = (int) definition["moves"];
+            initMap = (int[][])definition["initMap"];
+            moves = (int)definition["moves"];
+            name = (string)definition["name"];
         }
 
-        public int[][] InitMap {
-            get {
+        public int[][] InitMap
+        {
+            get
+            {
                 return initMap;
             }
         }
 
-        public int Moves {
-            get {
+        public int Moves
+        {
+            get
+            {
                 return moves;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return name;
             }
         }
     }

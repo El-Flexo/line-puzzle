@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using matchPuzzle.MVCS.controller.signal;
 using matchPuzzle.MVCS.model.level.chain;
 using matchPuzzle.MVCS.model.level.provider;
-using strange.extensions.signal.impl;
 
 namespace matchPuzzle.MVCS.model.level
 {

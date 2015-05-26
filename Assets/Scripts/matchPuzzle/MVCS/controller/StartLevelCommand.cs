@@ -11,27 +11,27 @@ namespace matchPuzzle.MVCS.controller
     public class StartLevelCommand : Command
     {
         [Inject(EntryPoint.Container.World)]
-        GameObject world {
+        public GameObject world {
             get;
             set;
         }
 
         [Inject]
-        string levelSource {
+        public int levelIndex {
             get;
             set;
         }
 
         [Inject]
-        ILevelProvider levelProvider {
+        public ILevelListModel levelList {
             get;
             set;
         }
 
         public override void Execute()
         {
-            var provider = (DefLevelProvider) levelProvider;
-            provider.SetDef(levelSource);
+            var provider = levelList.LevelsAvailable[levelIndex];
+            injectionBinder.Bind<ILevelProvider>().To(provider);
 
             var level = (GameObject) Resources.Load("level/level");
             InstantiateUtil.InstantiateAt(level, world);

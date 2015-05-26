@@ -1,16 +1,18 @@
-using System.Reflection.Emit;
 using UnityEngine;
 using matchPuzzle.MVCS.controller.signal;
 using matchPuzzle.MVCS.model;
 using matchPuzzle.MVCS.model.level;
 using matchPuzzle.MVCS.model.level.chain;
-using matchPuzzle.MVCS.model.level.provider;
+using matchPuzzle.MVCS.controller;
 using matchPuzzle.MVCS.view.game.level;
+using matchPuzzle.core.UI;
 using strange.extensions.command.api;
 using strange.extensions.command.impl;
 using strange.extensions.context.impl;
+using matchPuzzle.MVCS.view.UI.main;
 
-namespace matchPuzzle.MVCS {
+namespace matchPuzzle.MVCS
+{
     public class AppContext : MVCSContext
     {
         readonly EntryPoint entryPoint;
@@ -45,7 +47,8 @@ namespace matchPuzzle.MVCS {
 
         void mapCommands()
         {
-
+            commandBinder.Bind<StratupSignal>().To<StartupCommand>();
+            commandBinder.Bind<StartLevelSignal>().To<StartLevelCommand>();
         }
 
         void mapSignals()
@@ -54,15 +57,17 @@ namespace matchPuzzle.MVCS {
             injectionBinder.Bind<UnpinElementSignal>().ToSingleton();
             injectionBinder.Bind<EliminateElementsSignal>().ToSingleton();
             injectionBinder.Bind<AddElementsSignal>().ToSingleton();
+            injectionBinder.Bind<MoveElementsSignal>().ToSingleton();
         }
 
         void mapModels()
         {
             injectionBinder.Bind<RandomProxy>().To(new RandomProxy(123));
             injectionBinder.Bind<IElementGenerator>().To<RandomElementGenerator>().ToSingleton();
-            injectionBinder.Bind<ILevelProvider>().To<DefLevelProvider>().ToSingleton();
             injectionBinder.Bind<ILevelModel>().To<LevelModel>();
             injectionBinder.Bind<IChainModel>().To<ChainModel>();
+
+            injectionBinder.Bind<ILevelListModel>().To<LevelListModel>().ToSingleton();
         }
 
         void mapMediators()
@@ -72,13 +77,16 @@ namespace matchPuzzle.MVCS {
 
         void mapUIMediators()
         {
-
+            mediationBinder.Bind<ScreenMainView>().To<ScreenMainMediator>();
         }
 
         void mapOthers()
         {
             injectionBinder.Bind<GameObject>().To(entryPoint.World).ToName(EntryPoint.Container.World);
             injectionBinder.Bind<GameObject>().To(entryPoint.UI).ToName(EntryPoint.Container.UI);
+
+            injectionBinder.Bind<UIMap>().ToSingleton();
+            injectionBinder.Bind<UIManager>().ToSingleton();
         }
     }
 }

@@ -9,5 +9,9 @@ namespace matchPuzzle.MVCS.model.level.provider
         int Moves {
             get;
         }
+        
+        string Name {
+            get;
+        }
     }
 }

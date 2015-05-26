@@ -17,7 +17,8 @@ namespace matchPuzzle.utils
         public static GameObject InstantiateUIAt(GameObject child, GameObject _parent)
         {
             var instance = Object.Instantiate(child) as GameObject;
-            instance.transform.SetParent(_parent.transform);
+            instance.transform.SetParent(_parent.transform, false);
+            instance.transform.localScale = child.transform.localScale;
 
             return instance;
         }
