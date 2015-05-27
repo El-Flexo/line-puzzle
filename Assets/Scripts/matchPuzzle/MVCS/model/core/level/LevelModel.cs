@@ -140,13 +140,13 @@ namespace matchPuzzle.MVCS.model.level
         }
     }
 
-    public struct MoveElementMessage
+    public class MoveElementMessage
     {
         public Point From;
         public Point To;
     }
 
-    public struct AddElementMessage
+    public class AddElementMessage
     {
         public Point To;
         public ElementType Type;

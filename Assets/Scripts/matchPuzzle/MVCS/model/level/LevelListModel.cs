@@ -26,4 +26,11 @@ namespace matchPuzzle.MVCS.model.level
             }
         }
     }
+
+    public interface ILevelListModel
+    {
+        ILevelProvider[] LevelsAvailable {
+            get;
+        }
+    }
 }

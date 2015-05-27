@@ -67,6 +67,7 @@ namespace matchPuzzle.MVCS
             injectionBinder.Bind<ILevelModel>().To<LevelModel>();
             injectionBinder.Bind<IChainModel>().To<ChainModel>();
 
+            injectionBinder.Bind<IElementsDefModel>().To<ElementsDefModel>().ToSingleton();
             injectionBinder.Bind<ILevelListModel>().To<LevelListModel>().ToSingleton();
         }
 

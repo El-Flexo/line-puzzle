@@ -1,6 +1,6 @@
 {
-    0: "level/element/textures/red",
-    1: "level/element/textures/green",
-    2: "level/element/textures/blue",
-    3: "level/element/textures/yellow"
+    "0": "level/element/textures/red",
+    "1": "level/element/textures/green",
+    "2": "level/element/textures/blue",
+    "3": "level/element/textures/yellow"
 }

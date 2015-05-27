@@ -1,37 +1,52 @@
 using UnityEngine;
 using matchPuzzle.MVCS.model;
+using matchPuzzle.component;
 using strange.extensions.signal.impl;
 
 namespace matchPuzzle.MVCS.view.game.level
 {
+    [RequireComponent(typeof(Sprite))]
+    [RequireComponent(typeof(MouseTrigger))]
     public class ElementWidget : MonoBehaviour
     {
         [SerializeField]
         SpriteRenderer selector;
 
-        public readonly Signal<ElementWidget> OnInputSelected = new Signal<ElementWidget>();
+        SpriteRenderer elementImage;
 
-        bool signalSent = false;
-
-        void OnMouseOver()
-        {
-            OnInputSelected.Dispatch(this);
-            signalSent = true;
+        public MouseTrigger trigger {
+            get;
+            private set;
         }
 
-        void OnMouseExit()
+        public Point Position;
+
+        void Awake()
         {
-            signalSent = false;
+            elementImage = gameObject.GetComponent<SpriteRenderer>();
+            trigger = gameObject.GetComponent<MouseTrigger>();
+        }
+
+        public void Init(Point position, string textureId)
+        {
+            SetTexture(textureId);
+            Position = position;
+        }
+
+        void SetTexture(string resourceId)
+        {
+            var sprite = Resources.Load<Sprite>(resourceId);
+            elementImage.sprite = sprite;
         }
 
         public void Select()
         {
-            selector.enabled = false;
+            selector.enabled = true;
         }
 
         public void Unselect()
         {
-            selector.enabled = true;
+            selector.enabled = false;
         }
     }
 }
