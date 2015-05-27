@@ -15,7 +15,7 @@ namespace matchPuzzle.MVCS.model.level.chain
         }
 
         [Inject]
-        public PinElementSignal unpinElement {
+        public UnpinElementSignal unpinElement {
             get;
             set;
         }

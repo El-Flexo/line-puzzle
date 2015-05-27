@@ -21,7 +21,7 @@ namespace matchPuzzle.model.level {
             var chain = new ChainModel();
             chain.level = level;
             chain.pinElement = new PinElementSignal();
-            chain.unpinElement = new PinElementSignal();
+            chain.unpinElement = new UnpinElementSignal();
             this.chain = chain;
         }
 
