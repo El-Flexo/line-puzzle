@@ -73,6 +73,8 @@ namespace matchPuzzle.MVCS.view.game.level
             set;
         }
 
+        static ILevelModel saved;
+
         public override void OnRegister()
         {
             // view events
@@ -93,6 +95,9 @@ namespace matchPuzzle.MVCS.view.game.level
 
         void tryToPinHandler(Point point)
         {
+            if (level.MovesLast <= 0)
+                return;
+
             if (chain.Value.Length != 0 && chain.CanPin(point))
             {
                 chain.Pin(point);
@@ -101,6 +106,9 @@ namespace matchPuzzle.MVCS.view.game.level
 
         void tryToApply(Point point)
         {
+            if (level.MovesLast <= 0)
+                return;
+
             if (chain.Value.Length == 0)
             {
                 chain.Pin(point);

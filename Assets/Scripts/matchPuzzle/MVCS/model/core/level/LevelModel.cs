@@ -39,6 +39,18 @@ namespace matchPuzzle.MVCS.model.level
             set;
         }
 
+        [Inject]
+        public LevelFailed levelFailed {
+            get;
+            set;
+        }
+
+        [Inject]
+        public LevelComplete levelComplete {
+            get;
+            set;
+        }
+
         int currentMove = 0;
 
         [PostConstruct]
@@ -48,6 +60,17 @@ namespace matchPuzzle.MVCS.model.level
         }
 
         public int[][] Map {
+            get;
+            private set;
+        }
+
+        public int RequiredScore {
+            get {
+                return provider.RequiredScore;
+            }
+        }
+
+        public int Score {
             get;
             private set;
         }
@@ -66,12 +89,14 @@ namespace matchPuzzle.MVCS.model.level
             EliminateElements(chain);
             SquashMap();
             FillMap();
+            checkGameStatus();
         }
 
         public void EliminateElements(Point[] chain)
         {
             foreach (var target in chain)
                 Map[target.y][target.x] = (int)ElementType.Empty;
+            Score += chain.Length * 10;
             eliminateElements.Dispatch(chain);
         }
 
@@ -127,6 +152,15 @@ namespace matchPuzzle.MVCS.model.level
             }
             if (elemtsToAdd.Count > 0)
                 addElements.Dispatch(elemtsToAdd.ToArray());
+        }
+
+        void checkGameStatus()
+        {
+            if (Score >= RequiredScore)
+                levelComplete.Dispatch();
+            else if (MovesLast <= 0) {
+                levelFailed.Dispatch();
+            }
         }
 
         public bool CanEliminate(Point[] chain)

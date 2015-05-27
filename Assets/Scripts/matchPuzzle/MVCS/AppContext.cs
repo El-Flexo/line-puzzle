@@ -1,15 +1,16 @@
 using UnityEngine;
+using matchPuzzle.MVCS.controller;
 using matchPuzzle.MVCS.controller.signal;
 using matchPuzzle.MVCS.model;
 using matchPuzzle.MVCS.model.level;
 using matchPuzzle.MVCS.model.level.chain;
-using matchPuzzle.MVCS.controller;
+using matchPuzzle.MVCS.view.UI.HUD;
+using matchPuzzle.MVCS.view.UI.main;
 using matchPuzzle.MVCS.view.game.level;
 using matchPuzzle.core.UI;
 using strange.extensions.command.api;
 using strange.extensions.command.impl;
 using strange.extensions.context.impl;
-using matchPuzzle.MVCS.view.UI.main;
 
 namespace matchPuzzle.MVCS
 {
@@ -49,6 +50,23 @@ namespace matchPuzzle.MVCS
         {
             commandBinder.Bind<StratupSignal>().To<StartupCommand>();
             commandBinder.Bind<StartLevelSignal>().To<StartLevelCommand>();
+            commandBinder.Bind<SwitchToMainScreenSignal>().InSequence()
+            .To<CleanGameContainersCommand>()
+            .To<SwitchToMainScreenCommand>();
+
+            commandBinder.Bind<LevelFailed>().InSequence()
+            .To<LevelFailedCommand>()
+            .To<CleanGameContainersCommand>()
+            .To<SwitchToMainScreenCommand>();
+
+            commandBinder.Bind<LevelComplete>().InSequence()
+            .To<LevelCompleteCommand>()
+            .To<CleanGameContainersCommand>()
+            .To<SwitchToMainScreenCommand>();
+
+            commandBinder.Bind<RetyLevelSignal>().InSequence()
+            .To<CleanGameContainersCommand>()
+            .To<StartLevelCommand>();
         }
 
         void mapSignals()
@@ -79,6 +97,7 @@ namespace matchPuzzle.MVCS
         void mapUIMediators()
         {
             mediationBinder.Bind<ScreenMainView>().To<ScreenMainMediator>();
+            mediationBinder.Bind<ScreenHUDView>().To<ScreenHUDMediator>();
         }
 
         void mapOthers()

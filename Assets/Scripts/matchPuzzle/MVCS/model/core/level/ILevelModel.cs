@@ -8,6 +8,14 @@ namespace matchPuzzle.MVCS.model.level
             get;
         }
 
+        int Score {
+            get;
+        }
+
+        int RequiredScore {
+            get;
+        }
+
         int[][] Map {
             get;
         }

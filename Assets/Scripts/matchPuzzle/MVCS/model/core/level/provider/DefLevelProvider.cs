@@ -1,6 +1,8 @@
 using JsonFx.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using matchPuzzle.utils;
 
 namespace matchPuzzle.MVCS.model.level.provider
@@ -8,39 +10,57 @@ namespace matchPuzzle.MVCS.model.level.provider
     public class DefLevelProvider : ILevelProvider
     {
         int[][] initMap;
-        int moves;
-        string name;
 
         public void SetDef(string def)
         {
             var definition = Json.Parse<Dictionary<String, object>>(def);
 
             initMap = (int[][])definition["initMap"];
-            moves = (int)definition["moves"];
-            name = (string)definition["name"];
+            Moves = (int)definition["moves"];
+            RequiredScore = (int)definition["requiredScore"];
+            Name = (string)definition["name"];
+            View = (string)definition["view"];
         }
 
         public int[][] InitMap
         {
-            get
-            {
-                return initMap;
+            get {
+                return DeepCopy<int[][]>(initMap);
             }
         }
 
         public int Moves
         {
-            get
-            {
-                return moves;
-            }
+            get;
+            private set;
         }
 
         public string Name
         {
-            get
+            get;
+            private set;
+        }
+
+        public int RequiredScore
+        {
+            get;
+            private set;
+        }
+
+        public string View
+        {
+            get;
+            private set;
+        }
+
+        public static T DeepCopy<T>(object objectToCopy)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                return name;
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(memoryStream, objectToCopy);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return (T)binaryFormatter.Deserialize(memoryStream);
             }
         }
     }

@@ -15,4 +15,12 @@ namespace matchPuzzle.MVCS.controller.signal
     public class AddElementsSignal : Signal<AddElementMessage[]>
     {
     }
+
+    public class LevelFailed : Signal
+    {
+    }
+
+    public class LevelComplete : Signal
+    {
+    }
 }

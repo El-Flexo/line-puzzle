@@ -60,6 +60,7 @@ namespace matchPuzzle.model.level
 
             Assert.That(level.Map, Is.EqualTo(expectedMap));
             Assert.That(level.MovesLast, Is.EqualTo(2));
+            Assert.That(level.Score, Is.EqualTo(40));
         }
 
         [TestCase]
