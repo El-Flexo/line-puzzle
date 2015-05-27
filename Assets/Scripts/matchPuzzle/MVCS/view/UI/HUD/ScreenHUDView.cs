@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using matchPuzzle.component;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 
@@ -22,6 +23,9 @@ namespace matchPuzzle.MVCS.view.UI.HUD
         [SerializeField]
         Text moves;
 
+        [SerializeField]
+        ProgressBar progressbar;
+
         public readonly Signal onExitLevel = new Signal();
         public readonly Signal onRetyLevel = new Signal();
         public readonly Signal onInfoRequired = new Signal();
@@ -38,6 +42,7 @@ namespace matchPuzzle.MVCS.view.UI.HUD
         public void SetScoreProgress(int score, int requiredScore)
         {
             this.score.text = score.ToString();
+            progressbar.SetProgress((float)score / (float)requiredScore);
         }
 
         public void SetMovesLast(int moves)
