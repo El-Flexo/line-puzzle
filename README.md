@@ -1,31 +1,31 @@
-# Lines puzzle
+# Line puzzle (base gameplay)
 
-## Исходная задача:
-* 4 разных цвета камешков;
-* начисление очков в зависимости от длины цепочки;
-* минимальная длина цепочки 4 камешка;
-* ограниченное количество цепочек в рамках одной сессии.
+Reference: [Jelly Splash](https://apps.facebook.com/jellysplash)
 
-Аналог - [Jelly Splash](https://apps.facebook.com/jellysplash)
+## Game features:
+* 4 different gems colors;
+* extra score for longer chains;
+* minimum chain length - 4 gems;
+* moves constrain for every level.
 
-## Unit тесты
-* код тестов и ресурсы к ним находятся в `line-puzzle/tests`
-* тесты охватывают большую часть модели геймплея
-* под mac os тесты можно запустить скриптом `line-puzzle/tests/run.sh` (необходим установленный mono)
+## Project features:
+* clear and hight quality code;
+* all in strange.ioc context for easy extending project
+* every level data store in separate json files
+* unit tests for all game logic
+* best for 768x1024, but all UI elements stratched by uGUI
 
-## Примечания
-* в проекте использован фрэймворк [Strange IOC](http://strangeioc.github.io/strangeioc/) (MVCS + DI)
-* модели основного геймплея находятся в пакете `matchPuzzle/MVCS/model/core`
-* представление игры находится в пакете `matchPuzzle/MVCS/view/game`
-* приложение спроектировано с учетом возможности добавления функциональности такой как:
+## Structure
+* level defenitions contains at Assets/Resources/defs/levels
+* element defenitions at Assets/Resources/defs/elements.json
 
->* использование бандлов (настройки уровней вынесены вайлы описания, используются префабы уровней)
->* реализации туториала (генератор элементов вынесен в отдельный интерфейс, в модели используется ГПСЧ)
->* переход на разделяемую логику приложения (модель полностью инкапсулирована от реализации)
->* портирование на мобильные устройства (инпут реализван отдельным компонентом)
+Note: for extend number of gems you must add item here, add texture and add enum item to Elements.cs
+* level prefabs contains at Assets/Resources/level/
 
-* в приложении использована графика из пака [Kenney Game Assets](http://kenney.itch.io/kenney-donation)
-* процесс планирования и примерный лог разработки можно посмотреть [здесь](https://trello.com/b/UiwvrlwQ/line-puzzle)
+Note: for extend number of levels or setup different level size you must add level prefab, setup camera and update your_best_new_level.json at Assets/Resources/defs/levels
+* all gameplay models at Assets/Scripts/MVCS/model
+* unit tests at tests/
 
-## Другие пояснения
-* целевая версия Unity - 4.6.3
+Note: for run test on mac use tests/run.sh at terminal (be sure that you installed "xbuild")
+
+All used graphic content form Kenney donation pack v33 (www.kenney.nl) - CC0 licence.

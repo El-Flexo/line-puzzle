@@ -1,12 +1,10 @@
 using UnityEngine;
 using matchPuzzle.MVCS.model;
-using matchPuzzle.component;
-using strange.extensions.signal.impl;
+using matchPuzzle.component.trigger;
 
 namespace matchPuzzle.MVCS.view.game.level
 {
     [RequireComponent(typeof(Sprite))]
-    [RequireComponent(typeof(MouseTrigger))]
     public class ElementWidget : MonoBehaviour
     {
         [SerializeField]
@@ -14,7 +12,7 @@ namespace matchPuzzle.MVCS.view.game.level
 
         SpriteRenderer elementImage;
 
-        public MouseTrigger trigger {
+        public IInteractionTrigger trigger {
             get;
             private set;
         }
@@ -24,7 +22,7 @@ namespace matchPuzzle.MVCS.view.game.level
         void Awake()
         {
             elementImage = gameObject.GetComponent<SpriteRenderer>();
-            trigger = gameObject.GetComponent<MouseTrigger>();
+            trigger = gameObject.GetComponent<IInteractionTrigger>();
         }
 
         public void Init(Point position, string textureId)

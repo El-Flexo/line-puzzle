@@ -1,13 +1,19 @@
 using UnityEngine;
 using strange.extensions.signal.impl;
 
-namespace matchPuzzle.component
+namespace matchPuzzle.component.trigger
 {
     [RequireComponent(typeof(Collider2D))]
-    public class MouseTrigger : MonoBehaviour
+    public class MouseTrigger : MonoBehaviour, IInteractionTrigger
     {
-        public readonly Signal<GameObject> onOver = new Signal<GameObject>();
-        public readonly Signal<GameObject> onClick = new Signal<GameObject>();
+        public Signal<GameObject> onOver { get; private set; }
+        public Signal<GameObject> onClick { get; private set; }
+
+        void Awake()
+        {
+            onOver = new Signal<GameObject>();
+            onClick = new Signal<GameObject>();
+        }
 
         bool isAlreadyOver = false;
 

@@ -10,5 +10,5 @@
     ],
     "name": "First Level",
     "requiredScore": 150,
-    "view": "level/secondLevel"
+    "view": "level/firstLevel"
 }
